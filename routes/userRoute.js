@@ -1,13 +1,15 @@
 const express = require('express');
+const { dirname } = require('path');
+const path = require('node:path');
 const multer = require('multer')
 const userRouter = express.Router();
 const { signupUser, loginUser, getAllProducts, addNewProduct, getSingleProduct, addComment, getComment } = require('../controllers/userController')
 const { checkToken } = require('../middlewares/checkToken')
-
+const appDir = dirname(require.main.filename);
 // define storage for image 
 const storage = multer.diskStorage({
     destination: function (request, file, callback) {
-        callback(null, '/uploads')
+        callback(null, path.join(appDir, '/controllers/uploads/'))
     },
 
     // add back the extention 
