@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const multer = require('multer')
 const userRouter = express.Router();
 const { signupUser, loginUser, getAllProducts, addNewProduct, getSingleProduct, addComment, getComment } = require('../controllers/userController')
@@ -7,8 +8,7 @@ const { checkToken } = require('../middlewares/checkToken')
 // define storage for image 
 const storage = multer.diskStorage({
     destination: function (request, file, callback) {
-        callback(null, 'https://productmanagementapi.herokuapp.com/controllers/uploads')
-        // callback(null, '../backend/controllers/uploads')
+        callback(null, path.join(__dirname, './controllers/uploads'))
     },
 
     // add back the extention 
