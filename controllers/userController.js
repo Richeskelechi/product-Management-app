@@ -2,12 +2,31 @@ const User = require('../models/Users');
 const Product = require('../models/Product');
 const Comment = require('../models/Comment');
 const bcrypt = require('bcrypt');
+const cloudinary = require("cloudinary").v2
 var jwt = require('jsonwebtoken');
 require('dotenv').config()
 const { sendMail } = require('../middlewares/sendMail');
 const { sendMessage } = require('../middlewares/sendMessage');
 
 JWT_SECRET = process.env.JWT_SECRET;
+
+const cloudinaryConfig = cloudinary.config({
+    cloud_name: process.env.CLOUDNAME,
+    api_key: process.env.CLOUDAPIKEY,
+    api_secret: process.env.CLOUDINARYSECRET,
+    secure: true
+})
+
+const getSignature = async (req, res) => {
+    const timestamp = Math.round(new Date().getTime() / 1000)
+    const signature = cloudinary.utils.api_sign_request(
+        {
+            timestamp: timestamp
+        },
+        cloudinaryConfig.api_secret
+    )
+    res.json({ timestamp, signature })
+}
 
 const signupUser = async (req, res) => {
     try {
@@ -152,4 +171,4 @@ const getComment = async (req, res) => {
     }
 }
 
-module.exports = { signupUser, loginUser, getAllProducts, addNewProduct, getSingleProduct, addComment, getComment }
+module.exports = { signupUser, loginUser, getAllProducts, addNewProduct, getSingleProduct, addComment, getComment, getSignature }

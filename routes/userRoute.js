@@ -1,36 +1,14 @@
 const express = require('express');
-const { dirname } = require('path');
-const path = require('node:path');
-const multer = require('multer')
 const userRouter = express.Router();
-const { signupUser, loginUser, getAllProducts, addNewProduct, getSingleProduct, addComment, getComment } = require('../controllers/userController')
+const { signupUser, loginUser, getAllProducts, addNewProduct, getSingleProduct, addComment, getComment, getSignature } = require('../controllers/userController')
 const { checkToken } = require('../middlewares/checkToken')
-const appDir = dirname(require.main.filename);
-// define storage for image 
-const storage = multer.diskStorage({
-    destination: function (request, file, callback) {
-        callback(null, path.join(appDir, '/controllers/uploads/'))
-    },
-
-    // add back the extention 
-    filename: function (request, file, callback) {
-        callback(null, Date.now() + file.originalname)
-    }
-});
-
-// upload parameters for multer 
-const upload = multer({
-    storage: storage,
-    limits: {
-        fieldSize: 1024 * 1024 * 3
-    },
-})
 
 userRouter.post('/signup', signupUser)
 userRouter.post('/login', loginUser)
 userRouter.get('/myProduct', checkToken, getAllProducts)
+userRouter.get('/get-signature', checkToken, getSignature)
 userRouter.get('/myProduct/:id', checkToken, getSingleProduct)
-userRouter.post('/addProduct', checkToken, upload.single('image'), addNewProduct)
+userRouter.post('/addProduct', checkToken, addNewProduct)
 userRouter.post('/addComment', checkToken, addComment)
 userRouter.get('/getComment/:id', checkToken, getComment)
 

@@ -11,7 +11,9 @@ sendMessage = async (ownerNumber, ownerFullName, senderDetails) => {
         from: myNumber
     }).then(message => console.log(message))
         // here you can implement your fallback code
-        .catch(error => console.log(error))
+        .catch(error => {
+            // console.log(error);
+        })
 }
 
 module.exports = { sendMessage }
