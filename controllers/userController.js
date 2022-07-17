@@ -118,20 +118,23 @@ const getSingleProduct = async (req, res) => {
 }
 
 const addNewProduct = async (req, res) => {
-    let newProduct = new Product({
-        productName: req.body.productName,
-        productCountry: req.user.country,
-        productState: req.user.state,
-        productLocation: req.body.productLocation,
-        productComment: req.body.productComment,
-        userId: req.user._id,
-        productImage: req.file.filename,
-    })
-    try {
-        newProduct = await newProduct.save();
-        res.status(201).json({ msg: 'Product Added Sucessfully', status: 201 })
-    } catch (error) {
-        res.status(500).json({ msg: error })
+    const expectedSignature = cloudinary.utils.api_sign_request({ public_id: req.body.public_id, version: req.body.version }, cloudinaryConfig.api_secret)
+    if (req.body.signature !== expectedSignature) {
+        let newProduct = new Product({
+            productName: req.body.productName,
+            productCountry: req.user.country,
+            productState: req.user.state,
+            productLocation: req.body.productLocation,
+            productComment: req.body.productComment,
+            userId: req.user._id,
+            productImage: req.body.public_id,
+        })
+        try {
+            newProduct = await newProduct.save();
+            res.status(201).json({ msg: 'Product Added Sucessfully', status: 201 })
+        } catch (error) {
+            res.status(500).json({ msg: error })
+        }
     }
 }
 
