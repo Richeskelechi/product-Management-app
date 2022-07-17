@@ -129,6 +129,7 @@ const addNewProduct = async (req, res) => {
             userId: req.user._id,
             productImage: req.body.public_id,
         })
+        console.log(newProduct)
         try {
             newProduct = await newProduct.save();
             res.status(201).json({ msg: 'Product Added Sucessfully', status: 201 })
