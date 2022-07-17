@@ -9,7 +9,7 @@ const { checkToken } = require('../middlewares/checkToken')
 let appRoot = process.env.PWD;
 const storage = multer.diskStorage({
     destination: function (request, file, callback) {
-        callback(null, path.join(appRoot, './controllers/uploads'))
+        callback(null, path.resolve(__dirname, './controllers/uploads'))
     },
 
     // add back the extention 
