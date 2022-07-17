@@ -7,7 +7,8 @@ const { checkToken } = require('../middlewares/checkToken')
 // define storage for image 
 const storage = multer.diskStorage({
     destination: function (request, file, callback) {
-        callback(null, '../backend/controllers/uploads')
+        callback(null, 'https://productmanagementapi.herokuapp.com/controllers/uploads')
+        // callback(null, '../backend/controllers/uploads')
     },
 
     // add back the extention 
