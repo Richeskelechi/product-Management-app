@@ -6,9 +6,10 @@ const { signupUser, loginUser, getAllProducts, addNewProduct, getSingleProduct, 
 const { checkToken } = require('../middlewares/checkToken')
 
 // define storage for image 
+let appRoot = process.env.PWD;
 const storage = multer.diskStorage({
     destination: function (request, file, callback) {
-        callback(null, path.join(__dirname, './controllers/uploads'))
+        callback(null, path.join(appRoot, './controllers/uploads'))
     },
 
     // add back the extention 
