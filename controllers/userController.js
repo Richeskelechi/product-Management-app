@@ -119,7 +119,7 @@ const getSingleProduct = async (req, res) => {
 
 const addNewProduct = async (req, res) => {
     const expectedSignature = cloudinary.utils.api_sign_request({ public_id: req.body.public_id, version: req.body.version }, cloudinaryConfig.api_secret)
-    if (req.body.signature !== expectedSignature) {
+    if (req.body.signature === expectedSignature) {
         let newProduct = new Product({
             productName: req.body.productName,
             productCountry: req.user.country,
